@@ -12,18 +12,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.Files;
-import java.util.*;
 
 
 /**
@@ -110,6 +111,11 @@ public abstract class KeedioSource<T> {
      */
     protected Integer chunkSize;     
    
+    protected String runDiscoverFileMatch;
+    protected Pattern fileMatcher = Pattern.compile(".*");
+    
+    protected boolean runDiscoverSubfolder;
+    
     /**
      *
      * @return
@@ -538,6 +544,25 @@ public abstract class KeedioSource<T> {
         this.chunkSize = chunkSize;
     }
 
-      
-    
+	public String getRunDiscoverFileMatch() {
+		return runDiscoverFileMatch;
+	}
+
+	public void setRunDiscoverFileMatch(String runDiscoverFileMatch) {
+		this.runDiscoverFileMatch = runDiscoverFileMatch;
+		this.fileMatcher = Pattern.compile(runDiscoverFileMatch);
+	}
+
+	public boolean isRunDiscoverSubfolder() {
+		return runDiscoverSubfolder;
+	}
+
+	public void setRunDiscoverSubfolder(boolean runDiscoverSubfolder) {
+		this.runDiscoverSubfolder = runDiscoverSubfolder;
+	}
+	
+	public boolean isMatchFile(String filename) {
+		return fileMatcher.matcher(filename).matches();
+	}
+
 } //endclass

@@ -24,6 +24,8 @@ public class SourceFactory {
     private static final String FOLDER_DEFAULT = System.getProperty("java.io.tmpdir");
     private static final Integer CHUNKSIZE_DEFAULT = 1024;
     private static final String FILENAME_DEFAULT = "default_file_track_status.ser";
+	private static final String DISCOVER_FILEMATCH = ".*";
+	private static final Boolean DISCOVER_SUBFOLDER = true;
     
 
     /**
@@ -84,6 +86,8 @@ public class SourceFactory {
         keedioSource.setUser(context.getString("user"));
         keedioSource.setPassword(context.getString("password"));
         keedioSource.setRunDiscoverDelay(context.getInteger("run.discover.delay", DISCOVER_DELAY));
+        keedioSource.setRunDiscoverFileMatch(context.getString("run.discover.filematch", DISCOVER_FILEMATCH));
+        keedioSource.setRunDiscoverSubfolder(context.getBoolean("run.discover.subfolder", DISCOVER_SUBFOLDER));
         keedioSource.setWorkingDirectory(context.getString("working.directory"));
         keedioSource.setPort(context.getInteger("port"));
         keedioSource.setFolder(context.getString("folder", FOLDER_DEFAULT));

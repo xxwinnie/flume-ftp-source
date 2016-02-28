@@ -178,13 +178,22 @@ public class Source extends AbstractSource implements Configurable, PollableSour
                 }
 
                 if (keedioSource.isDirectory(element)) {
-                    LOGGER.info("[" + elementName + "]");
-                    keedioSource.changeToDirectory(parentDir);
-                    discoverElements(keedioSource, dirToList, elementName, level + 1);
+                    LOGGER.info("[" + elementName + "], process: " + keedioSource.isRunDiscoverSubfolder());
+                    //check if need to check
+                    if (keedioSource.isRunDiscoverSubfolder()) {
+                    	keedioSource.changeToDirectory(parentDir);
+                    	discoverElements(keedioSource, dirToList, elementName, level + 1);
+                    }
 
                 } else if (keedioSource.isFile(element)) { //element is a regular file
                     keedioSource.changeToDirectory(dirToList);
-                    keedioSource.getExistFileList().add(dirToList + "/" + elementName);  //control of deleted files in server  
+                    //check the file name match
+                    if (keedioSource.isMatchFile(elementName)) {
+                    	keedioSource.getExistFileList().add(dirToList + "/" + elementName);  //control of deleted files in server  
+                    } else {
+                    	LOGGER.info("[" + elementName + "] skiped!");
+                    	continue;
+                    }
 
                     //test if file is new in collection
                     if (!(keedioSource.getFileList().containsKey(dirToList + "/" + elementName))) { //new file
